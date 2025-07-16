@@ -42,8 +42,8 @@ static long semihosting_trap(int sysnum, void *addr)
 	return ret;
 }
 
-static bool _semihosting_enabled = true;
-static bool try_semihosting = true;
+static bool _semihosting_enabled = false;
+static bool try_semihosting = false;
 
 bool semihosting_enabled(void)
 {
