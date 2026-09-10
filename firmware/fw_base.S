@@ -117,9 +117,7 @@ cheri_cap_init:
 2:	XREG_L	t3, 0(PREG(t0))	/* t3 <-- capreloc:capability_location */
 	add	t3, t3, t2
 	scaddr	PREG(t3), PREG(a3), t3 	/* t3 <-- W permission capability points to capability */
-	XREG_L	t4, SZXREG(PREG(t0))	/* t4 <-- capreloc:capability_base */
-	bnez	t4, 3f		/* write cnull if capreloc:capability_base is zero */
-	j	10f		/* Initialize next capability */
+	XREG_L	t4, SZXREG(PREG(t0))	/* t4 <-- capreloc:object */
 
 3:	/* Set address/base */
 	add	t4, t4, t2
@@ -131,22 +129,22 @@ cheri_cap_init:
 #endif /* defined(__riscv_zcherihybrid) */
 
 	/* Do not set tight bounds for functions for default setting -cheri-cap-table-abi=pcrel  */
-	XREG_L	t4, (SZXREG * 4)(PREG(t0))	/* t4 <-- capreloc:capability_flags */
+	XREG_L	t4, (SZXREG * 4)(PREG(t0))	/* t4 <-- capreloc:permissions */
 	li	t6, CAP_RELOC_CR_FLAG_FUNC
 	and	t6, t6, t4
 	bnez	t6, 4f
 
 	/* Set bounds */
-	XREG_L	t4, (SZXREG * 3)(PREG(t0))	/* t4 <-- capreloc:capability_length */
-	beqz	t4,	4f		/* unlimited bounds if the capability_length is zero */
+	XREG_L	t4, (SZXREG * 3)(PREG(t0))	/* t4 <-- capreloc:size */
+	beqz	t4,	4f		/* unlimited bounds if the size is zero */
 	scbndsr	PREG(t5), PREG(t5), t4
 
 4:	/* Set offset */
-	XREG_L	t4, (SZXREG * 2)(PREG(t0))	/* t4 <-- capreloc:capability_offset */
+	XREG_L	t4, (SZXREG * 2)(PREG(t0))	/* t4 <-- capreloc:offset */
 	add	PREG(t5), PREG(t5), t4
 
 5:	/* Set permission */
-	XREG_L	t4, (SZXREG * 4)(PREG(t0))	/* t4 <-- capreloc:capability_flags */
+	XREG_L	t4, (SZXREG * 4)(PREG(t0))	/* t4 <-- capreloc:permissions */
 	bnez	t4, 6f
 	li t6,	CHERI_PERM_DATA		/* read-write data */
 	acperm	PREG(t5), PREG(t5), t6
