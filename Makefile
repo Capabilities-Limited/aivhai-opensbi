@@ -436,6 +436,7 @@ ELFFLAGS	+=	-Wl,--exclude-libs,ALL
 endif
 ELFFLAGS	+=	-Wl,--build-id=none
 ELFFLAGS	+=	-Wl,--no-dynamic-linker -Wl,-pie
+ELFFLAGS	+=	-Wl,-z,norelro
 ELFFLAGS	+=	$(platform-ldflags-y)
 ELFFLAGS	+=	$(firmware-ldflags-y)
 
