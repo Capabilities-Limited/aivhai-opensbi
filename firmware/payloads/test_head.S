@@ -18,7 +18,7 @@
 	ypermc	\rd, \rs, \scratch
 #else
 	li	\scratch, \perm
-	acperm	REG(\rd), REG(\rd), \scratch
+	acperm	c\rd, c\rd, \scratch
 #endif
 .endm
 

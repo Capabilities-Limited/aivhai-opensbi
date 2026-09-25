@@ -68,14 +68,29 @@
 
 #define PREG_L		__REG_SEL(ly, ly)
 #define PREG_S		__REG_SEL(sy, sy)
-#define PREG_ADD	yadd
-#define PREG_ADDI	yaddi
-#define PREG_MV		ymv
-#define SZPREG		__REG_SEL(16, 8)
-#define LGPREG		__REG_SEL(4, 3)
-
+#if defined(__riscv_zcheripurecap) && !defined(__ASSEMBLER__)
+/*
+ * Work around inline assembly register binding.
+ * In RVY, the capability register is emitted as xN, while
+ * in zcheri as cxN. The RVY instruction
+ * alias will fail to work with c-prefixed registers.
+ * When using inline assembly, we re-define these to use the
+ * zcheri mnemonic.
+ */
+#define PREG_ADD	__ASM_STR(cadd)
+#define PREG_ADDI	__ASM_STR(caddi)
+#define PREG_MV		__ASM_STR(cmv)
+#define PC_PTR_L	__ASM_STR(llc)
+#define PTR_L		__ASM_STR(lgc)
+#else
+#define PREG_ADD	__ASM_STR(yadd)
+#define PREG_ADDI	__ASM_STR(yaddi)
+#define PREG_MV		__ASM_STR(ymv)
 #define PC_PTR_L	__ASM_STR(lly)
 #define PTR_L		__ASM_STR(lgy)
+#endif
+#define SZPREG		__REG_SEL(16, 8)
+#define LGPREG		__REG_SEL(4, 3)
 
 #define PTR_REG		"C"
 
