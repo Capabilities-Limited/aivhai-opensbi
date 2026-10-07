@@ -48,12 +48,25 @@ FW_PAYLOAD_PATH_FINAL=$(FW_PAYLOAD_PATH)
 else
 FW_PAYLOAD_PATH_FINAL=$(platform_build_dir)/firmware/payloads/test.bin
 endif
+firmware-bins-$(FW_COMPARTMENT) += fw_compartment.bin
+ifdef FW_COMPARTMENT_PATH
+FW_COMPARTMENT_PATH_FINAL=$(FW_COMPARTMENT_PATH)
+else
+FW_COMPARTMENT_PATH_FINAL=$(platform_build_dir)/firmware/payloads/test.bin
+endif
 firmware-genflags-$(FW_PAYLOAD) += -DFW_PAYLOAD_PATH=\"$(FW_PAYLOAD_PATH_FINAL)\"
 ifdef FW_PAYLOAD_OFFSET
 firmware-genflags-$(FW_PAYLOAD) += -DFW_PAYLOAD_OFFSET=$(FW_PAYLOAD_OFFSET)
 endif
 ifdef FW_PAYLOAD_ALIGN
 firmware-genflags-$(FW_PAYLOAD) += -DFW_PAYLOAD_ALIGN=$(FW_PAYLOAD_ALIGN)
+endif
+firmware-genflags-$(FW_COMPARTMENT) += -DFW_COMPARTMENT_PATH=\"$(FW_COMPARTMENT_PATH_FINAL)\"
+ifdef FW_COMPARTMENT_OFFSET
+firmware-genflags-$(FW_COMPARTMENT) += -DFW_COMPARTMENT_OFFSET=$(FW_COMPARTMENT_OFFSET)
+endif
+ifdef FW_COMPARTMENT_ALIGN
+firmware-genflags-$(COMPARTMENT) += -DFW_COMPARTMENT_ALIGN=$(FW_COMPARTMENT_ALIGN)
 endif
 
 ifdef FW_PAYLOAD_FDT_OFFSET
