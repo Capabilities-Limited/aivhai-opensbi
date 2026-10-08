@@ -228,6 +228,10 @@ bool sbi_domain_check_addr(const struct sbi_domain *dom,
 	if (!dom)
 		return false;
 
+#if defined(__CHERI__)
+		return true;
+#endif
+
 	/*
 	 * Use M_{R/W/X} bits because the SU-bits are at the
 	 * same relative offsets. If the mode is not M, the SU
@@ -470,6 +474,7 @@ static int sanitize_domain(struct sbi_domain *dom)
 	 * be started at boot-time by sbi_domain_finalize().
 	 */
 
+#if !defined(__CHERI__)
 	/*
 	 * Check next mode
 	 *
@@ -482,6 +487,7 @@ static int sanitize_domain(struct sbi_domain *dom)
 			   __func__, dom->name, dom->next_mode);
 		return SBI_EINVAL;
 	}
+#endif
 
 	/* Check next address and next mode */
 	if (!sbi_domain_check_addr(dom, dom->next_addr, dom->next_mode,
