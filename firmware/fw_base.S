@@ -504,7 +504,7 @@ _start_warm:
 	set_cap_perm sp, sp, t0, CHERI_PERM_DATA	/* sp is a read-write data */
 	yadd	sp, sp, a5		/* Set sp to sp top */
 #else
-	yadd	sp, tp, zero
+	add	sp, tp, zero
 #endif
 
 	/* Setup trap handler */
