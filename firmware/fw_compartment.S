@@ -196,14 +196,14 @@ compartment_setup:
 	li t4, 0
 	li t5, 0
 	li t6, 0
-	csrw CSR_SEPC, 0
-	csrw CSR_MEPC, 0
-	csrw CSR_STVEC, 0
-	csrw CSR_SSCRATCH, 0
+	csrw CSR_SEPC, c0
+	csrw CSR_MEPC, c0
+	csrw CSR_STVEC, c0
+	csrw CSR_SSCRATCH, c0
 #endif
 
 #if !defined(AIVHAI_VULN_DDC)
-	csrw ddc, 0
+	csrw ddc, c0
 #endif
 
 ###5 Jump to a compartment
