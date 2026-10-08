@@ -397,7 +397,8 @@ CFLAGS		+=	-mcmodel=$(PLATFORM_RISCV_CODE_MODEL)
 CFLAGS		+=	$(RELAX_FLAG)
 CFLAGS		+=	$(GENFLAGS)
 CFLAGS		+=	$(platform-cflags-y)
-CFLAGS		+=	-fPIE -pie
+#CFLAGS		+=	-fPIE -pie
+CFLAGS		+=	-no-pie -static
 CFLAGS		+=	$(firmware-cflags-y)
 
 CPPFLAGS	+=	$(GENFLAGS)
@@ -406,7 +407,7 @@ CPPFLAGS	+=	$(firmware-cppflags-y)
 
 ASFLAGS		=	-g -Wall -nostdlib
 ASFLAGS		+=	-fno-omit-frame-pointer -fno-optimize-sibling-calls
-ASFLAGS		+=	-fPIE
+#ASFLAGS		+=	-fPIE
 ASFLAGS		+=	$(REPRODUCIBLE_FLAGS)
 # Optionally supported flags
 ifeq ($(CC_SUPPORT_SAVE_RESTORE),y)
@@ -435,7 +436,8 @@ ifeq ($(OPENSBI_LD_EXCLUDE_LIBS),y)
 ELFFLAGS	+=	-Wl,--exclude-libs,ALL
 endif
 ELFFLAGS	+=	-Wl,--build-id=none
-ELFFLAGS	+=	-Wl,--no-dynamic-linker -Wl,-pie
+#ELFFLAGS	+=	-Wl,--no-dynamic-linker -Wl,-pie
+ELFFLAGS	+=	-Wl,--no-dynamic-linker -Wl,-no-pie
 ELFFLAGS	+=	-Wl,-z,norelro
 ELFFLAGS	+=	$(platform-ldflags-y)
 ELFFLAGS	+=	$(firmware-ldflags-y)
