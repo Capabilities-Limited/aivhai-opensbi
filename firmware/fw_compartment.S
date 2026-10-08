@@ -148,12 +148,21 @@ compartment_setup:
 	PTR_L ra, compartment_enter
 	ylenr t1, ra
 	yaddrw t0, t0, ra
+#if defined(AIVHAI_VULN_BOUNDS)
+	ymv t1, t0
+#else
 	ybndsrw t1, t0, t1
+#endif
 
+#if !defined(AIVHAI_VULN_ASR)
 	# Strip ASR permission
 	li t0, CHERI_PERM_SYSTEM_REGS
-	ypermc ra, t1, t0
+	ypermc t1, t1, t0
+#endif
 
+	ymv ra, t1
+
+#if !defined(AIVHAI_VULN_REGS_TEMP)
 ###4 clear all registers
 	/* flush the instruction cache */
 	fence.i
@@ -191,8 +200,11 @@ compartment_setup:
 	csrw CSR_MEPC, 0
 	csrw CSR_STVEC, 0
 	csrw CSR_SSCRATCH, 0
+#endif
 
+#if !defined(AIVHAI_VULN_DDC)
 	csrw ddc, 0
+#endif
 
 ###5 Jump to a compartment
 	########################################################################
