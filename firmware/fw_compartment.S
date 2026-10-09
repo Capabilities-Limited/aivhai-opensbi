@@ -151,7 +151,7 @@ compartment_setup:
 #if defined(AIVHAI_VULN_BOUNDS)
 	ymv t1, t0
 #else
-	ybndsrw t1, t0, t1
+	ybndsw t1, t0, t1
 #endif
 
 #if !defined(AIVHAI_VULN_ASR)
